@@ -37,8 +37,8 @@ class UtilService
         $see->setService($endpoint);
 
         $see->setClaveSOL(
-            $this->company->ruc, 
-            $this->company->sol_user, 
+            $this->company->ruc,
+            $this->company->sol_user,
             $this->company->sol_pass
         );
 
@@ -62,12 +62,12 @@ class UtilService
                 'cache' => false,
             ])
             ->setApiCredentials(
-                $this->company->production ? $this->company->client_id : 'test-85e5b0ae-255c-4891-a595-0b98c65c9854', 
+                $this->company->production ? $this->company->client_id : 'test-85e5b0ae-255c-4891-a595-0b98c65c9854',
                 $this->company->production ? $this->company->client_secret : 'test-Hty/M6QshYvPgItX2P0+Kw=='
             )
             ->setClaveSOL(
-                $this->company->ruc, 
-                $this->company->production ? $this->company->user_sol : 'MODDATOS', 
+                $this->company->ruc,
+                $this->company->production ? $this->company->user_sol : 'MODDATOS',
                 $this->company->production ? $this->company->password_sol : 'MODDATOS'
             )
             ->setCertificate($this->company->certificate);
@@ -173,18 +173,18 @@ class UtilService
         $params = [
             'system' => [
                 'logo' => $this->company->image_path ? Storage::get($this->company->image_path) : file_get_contents(public_path('img/no-image.jpg')),
-                'hash' => $hash, // Valor Resumen 
+                'hash' => $hash, // Valor Resumen
             ],
             'user' => [
                 'header'     => 'Telf: <b>987601368</b>', // Texto que se ubica debajo de la dirección de empresa
                 'extras'     => [
                     // Leyendas adicionales
                     [
-                        'name' => 'CONDICION DE PAGO', 
+                        'name' => 'CONDICION DE PAGO',
                         'value' => 'Efectivo'
                     ],
                     [
-                        'name' => 'VENDEDOR' , 
+                        'name' => 'VENDEDOR' ,
                         'value' => $this->company->razonSocial
                     ],
                 ],
@@ -211,21 +211,21 @@ class UtilService
             'page-width' => '21cm',
             'page-height' => '29.7cm',
         ]);
-
-        $report->setBinPath(env('WKHTMLTOPDF_BINARIES')); // Ruta relativa o absoluta de wkhtmltopdf
+        $bind_path= config('pdf.wkhtmltopdf_bin');
+        $report->setBinPath($bind_path); // Ruta relativa o absoluta de wkhtmltopdf
 
         $extras = [];
         if (in_array($invoice->getTipoDoc(), ['01', '03'])) {
 
             $formaPago = $invoice->getFormaPago();
             $extras[] = [
-                'name' => 'CONDICION DE PAGO', 
+                'name' => 'CONDICION DE PAGO',
                 'value' => $formaPago ? $formaPago->getTipo() : 'Efectivo'
             ];
         }
 
         $extras[] = [
-            'name' => 'VENDEDOR' , 
+            'name' => 'VENDEDOR' ,
             'value' => $this->company->razonSocial
         ];
 
@@ -242,7 +242,7 @@ class UtilService
         $params = [
             'system' => [
                 'logo' => $this->company->logo_path ? Storage::get($this->company->logo_path) : file_get_contents(public_path('img/no-image.jpg')),
-                'hash' => $hash, // Valor Resumen 
+                'hash' => $hash, // Valor Resumen
             ],
             'user' => $user
         ];
